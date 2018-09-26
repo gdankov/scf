@@ -1,8 +1,258 @@
 ---
 instance_groups:
-- name: syslog-scheduler
+- name: loggregator-agent-syslog-scheduler
+  type: colocated-container
   environment_scripts:
   - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-adapter
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-nats
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-diego-api
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-router
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-tcp-router
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-routing-api
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-api
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-cc-worker
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-blobstore
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-cc-clock
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-doppler
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-log-api
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-diego-brain
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-cc-uploader
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-diego-access
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-diego-cell
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: loggregator-agent-autoscaler-smoke
+  type: colocated-container
+  environment_scripts:
+  - scripts/configure-HA-hosts.sh
+  jobs:
+  - name: loggregator_agent
+    release: loggregator-agent
+    properties:
+      bosh_containerization:
+        run:
+          scaling:
+            min: 1
+            max: 3
+            ha: 2
+- name: syslog-scheduler
   scripts:
   - scripts/forward_logfiles.sh
   - scripts/patches/fix_monit_rsyslog.sh
@@ -12,9 +262,9 @@ instance_groups:
   - name: scheduler
     release: cf-syslog-drain
     properties:
-      colocated_containers:
-        - loggregator_agent
       bosh_containerization:
+        colocated_containers:
+          - loggregator-agent-syslog-scheduler
         run:
           scaling:
             min: 1
@@ -43,23 +293,7 @@ instance_groups:
         - name: sched-health
           protocol: TCP
           internal: 8080
-
-- name: loggregator_agent
-  type: colocated-container
-  jobs:
-  - name: loggregator_agent
-    release: loggregator-agent
-    properties:
-      bosh_containerization:
-        run:
-          scaling:
-            min: 1
-            max: 3
-            ha: 2
-
 - name: adapter
-  environment_scripts:
-  - scripts/configure-HA-hosts.sh
   scripts:
   - scripts/forward_logfiles.sh
   - scripts/patches/fix_monit_rsyslog.sh
@@ -69,9 +303,9 @@ instance_groups:
   - name: adapter
     release: cf-syslog-drain
     properties:
-      colocated_containers:
-        - loggregator_agent
       bosh_containerization:
+        colocated_containers:
+        - loggregator-agent-adapter
         run:
           scaling: # one per 500 drains
             min: 1
@@ -182,7 +416,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-nats
         run:
           scaling:
             min: 1
@@ -422,7 +656,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-diego-api
         run:
           scaling:
             min: 1
@@ -495,7 +729,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-router
         run:
           scaling:
             min: 1
@@ -567,7 +801,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-tcp-router
         run:
           scaling:
             min: 1
@@ -623,7 +857,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-routing-api
         run:
           scaling:
             min: 1
@@ -678,7 +912,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-api
         run:
           scaling:
             min: 1
@@ -756,7 +990,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-cc-worker
         run:
           scaling:
             min: 1
@@ -793,7 +1027,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-blobstore
         run:
           scaling:
             min: 1
@@ -836,7 +1070,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-cc-clock
         run:
           scaling:
             min: 1
@@ -860,8 +1094,6 @@ instance_groups:
   - name: statsd_injector
     release: statsd-injector
 - name: doppler
-  environment_scripts:
-  - scripts/configure-HA-hosts.sh
   scripts:
   - scripts/forward_logfiles.sh
   - scripts/patches/fix_monit_rsyslog.sh
@@ -873,7 +1105,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-doppler
         run:
           scaling:
             min: 1
@@ -930,7 +1162,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-log-api
         run:
           scaling:
             min: 1
@@ -989,7 +1221,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-diego-brain
         run:
           scaling:
             min: 1
@@ -1048,7 +1280,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-cc-uploader
         run:
           scaling:
             min: 1
@@ -1093,7 +1325,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-diego-access
         run:
           scaling:
             min: 1
@@ -1127,8 +1359,6 @@ instance_groups:
     release: diego
     properties:
       bosh_containerization:
-        colocated_containers:
-          - loggregator_agent
         ports:
         - name: diego-files
           protocol: TCP
@@ -1213,7 +1443,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-diego-cell
         # Instance group needs volume claim templates (see storage below), no LB => clustered
         run:
           scaling:
@@ -1646,7 +1876,7 @@ instance_groups:
     properties:
       bosh_containerization:
         colocated_containers:
-          - loggregator_agent
+          - loggregator-agent-autoscaler-smoke
         run:
           scaling:
             min: 0
