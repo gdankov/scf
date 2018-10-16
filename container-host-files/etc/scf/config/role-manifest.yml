@@ -2840,7 +2840,7 @@ variables:
     required: true
   type: certificate
 - name: BBS_CLIENT_CRT_KEY
-   options:
+  options:
     secret: true
     description: PEM-encoded client key.
     required: true
