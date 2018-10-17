@@ -501,7 +501,7 @@ instance_groups:
     templates:
       properties.bbs.hostname: '"diego-api-bbs.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN))"' # cfdot property
       properties.diego.bbs.advertisement_base_hostname: ((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN))
-      properties.locket.hostname: '"diego-api-locket.((KUBERNETES_NAMESPACE))"'    # cfdot property
+      properties.locket.hostname: '"locket-locket.((KUBERNETES_NAMESPACE))"'    # cfdot property
       properties.tls.ca_certificate: ((INTERNAL_CA_CERT))                   # cfdot property
       properties.tls.certificate: '"((BBS_REP_CERT))"'                      # cfdot property
       properties.tls.private_key: '"((BBS_REP_CERT_KEY))"'                  # cfdot property
@@ -1107,7 +1107,7 @@ instance_groups:
   configuration:
     templates:
       properties.bbs.hostname: '"diego-api-bbs.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN))"' # cfdot property
-      properties.locket.hostname: '"diego-api-locket.((KUBERNETES_NAMESPACE))"'    # cfdot property
+      properties.locket.hostname: '"locket-locket.((KUBERNETES_NAMESPACE))"'    # cfdot property
       properties.tls.ca_certificate: ((INTERNAL_CA_CERT))                   # cfdot property
       properties.tls.certificate: '"((BBS_REP_CERT))"'                      # cfdot property
       properties.tls.private_key: '"((BBS_REP_CERT_KEY))"'                  # cfdot property
@@ -1368,7 +1368,7 @@ instance_groups:
       properties.bbs.hostname: '"diego-api-bbs.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN))"' # cfdot property
       properties.containers.trusted_ca_certificates: "[((#TRUSTED_CERTS))((TRUSTED_CERTS)),((/TRUSTED_CERTS))((INTERNAL_CA_CERT))]"
       properties.diego.rep.advertise_domain: diego-cell-set.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN))
-      properties.locket.hostname: '"diego-api-locket.((KUBERNETES_NAMESPACE))"'    # cfdot property
+      properties.locket.hostname: '"locket-locket.((KUBERNETES_NAMESPACE))"'    # cfdot property
       properties.tls.ca_cert: ((INTERNAL_CA_CERT))
       properties.tls.ca_certificate: ((INTERNAL_CA_CERT))                   # cfdot property
       properties.tls.cert: ((REP_SERVER_CERT))
@@ -1801,6 +1801,9 @@ configuration:
     properties.acceptance_tests_brain.storage_class: '"((KUBERNETES_STORAGE_CLASS_PERSISTENT))"'
     properties.acceptance_tests_brain.tcp_domain: '"((TCP_DOMAIN))"'
     properties.app_domains: '["((DOMAIN))"]'
+# ----------------------- CHANGE --------------------------------
+    properties.app_ssh.host_key_fingerprint: '"((APP_SSH_KEY_FINGERPRINT))"'
+# -----------------------END- CHANGE --------------------------------
     properties.autoscaler.api_server.ca_cert: '"((INTERNAL_CA_CERT))"'
     properties.autoscaler.api_server.db_config.idle_timeout: '((AUTOSCALER_API_SERVER_DB_CONFIG_IDLE_TIMEOUT))'
     properties.autoscaler.api_server.db_config.max_connections: '((AUTOSCALER_API_SERVER_DB_CONFIG_MAX_CONNECTIONS))'
@@ -2069,7 +2072,7 @@ configuration:
     properties.diego.auctioneer.bbs.client_cert: '"((BBS_CLIENT_CRT))"'
     properties.diego.auctioneer.bbs.client_key: '"((BBS_CLIENT_CRT_KEY))"'
     properties.diego.auctioneer.ca_cert: '"((INTERNAL_CA_CERT))"'
-    properties.diego.auctioneer.locket.api_location: '"diego-api-locket.((KUBERNETES_NAMESPACE)):8891"'
+    properties.diego.auctioneer.locket.api_location: '"locket-locket.((KUBERNETES_NAMESPACE)):8891"'
     properties.diego.auctioneer.log_level: '"((GO_LOG_LEVEL))((#LOG_LEVEL))((/LOG_LEVEL))"'
     properties.diego.auctioneer.rep.ca_cert: '"((INTERNAL_CA_CERT))"'
     properties.diego.auctioneer.rep.client_cert: '"((AUCTIONEER_REP_CERT))"'
@@ -2082,6 +2085,11 @@ configuration:
     properties.diego.bbs.auctioneer.client_key: '"((BBS_AUCTIONEER_CERT_KEY))"'
     properties.diego.bbs.ca_cert: '"((INTERNAL_CA_CERT))"'
     properties.diego.bbs.encryption_keys: '[{"label": "active", "passphrase": "((BBS_ACTIVE_KEY_PASSPHRASE))"}]'
+
+# ---------------------------------- CHANGES ---------------------------------------
+    properties.diego.bbs.locket.api_location: '"locket-locket.((KUBERNETES_NAMESPACE)):8891"'
+# ---------------------------------- END-CHANGES ---------------------------------------
+
     properties.diego.bbs.log_level: '"((GO_LOG_LEVEL))((#LOG_LEVEL))((/LOG_LEVEL))"'
     properties.diego.bbs.rep.ca_cert: '"((INTERNAL_CA_CERT))"'
     properties.diego.bbs.rep.client_cert: '"((BBS_REP_CERT))"'
@@ -2103,7 +2111,7 @@ configuration:
     # -------------------------------------- CHANGE -----------------------------------------------------
     properties.diego.rep.bbs.api_location: diego-api-bbs.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN)):8889
     properties.diego.rep.cell_id: ((HOSTNAME))
-    properties.diego.rep.locket.api_location: diego-api-locket.((KUBERNETES_NAMESPACE)):8891
+    properties.diego.rep.locket.api_location: locket-locket.((KUBERNETES_NAMESPACE)):8891
     properties.diego.rep.log_level: '"((GO_LOG_LEVEL))((#LOG_LEVEL))((/LOG_LEVEL))"'
     properties.diego.rep.preloaded_rootfses: '["((SUSE_STACK)):/var/vcap/packages/((SUSE_STACK_DIRNAME))/rootfs.tar","cflinuxfs2:/var/vcap/packages/cflinuxfs2/rootfs.tar"]'
     properties.diego.rep.zone: '"((KUBE_AZ))"'
@@ -2309,19 +2317,20 @@ variables:
     description: Allow users to change the value of the app-level allow_ssh attribute.
     required: true
 
-# not sure about this one
-# - name: APP_SSH_KEY
-#   options:
-#     secret: true
-#     description: PEM encoded RSA private key used to identify host.
-#     required: true
-#   type: ssh
-# - name: APP_SSH_KEY_FINGERPRINT
-#   options:
-#     secret: true
-#     description: MD5 fingerprint of the host key of the SSH proxy that brokers connections
-#       to application instances.
-#     required: true
+# -------------------------------- CHANGES -------------------------------------
+- name: APP_SSH_KEY
+  options:
+    secret: true
+    description: PEM encoded RSA private key used to identify host.
+    required: true
+  type: ssh
+- name: APP_SSH_KEY_FINGERPRINT
+  options:
+    secret: true
+    description: MD5 fingerprint of the host key of the SSH proxy that brokers connections
+      to application instances.
+    required: true
+# -------------------------------- END-CHANGES -------------------------------------
 
 - name: APP_TOKEN_UPLOAD_GRACE_PERIOD
   options:
