@@ -465,10 +465,6 @@ instance_groups:
           memory: 310
           virtual-cpus: 2
           active-passive-probe: /var/vcap/jobs/global-properties/bin/readiness/diego-api
-          healthcheck:
-            readiness:
-              command:
-              - head -c0 </dev/tcp/${HOSTNAME}/8891
           affinity:
             podAntiAffinity:
               preferredDuringSchedulingIgnoredDuringExecution:
@@ -536,6 +532,14 @@ instance_groups:
           capabilities: []
           memory: 310
           virtual-cpus: 2
+
+# -------------------------------------- CHANGES ------------------------------------
+          healthcheck:
+            readiness:
+              command:
+              - head -c0 </dev/tcp/${HOSTNAME}/8891
+# -------------------------------------- END-CHANGES ------------------------------------
+
           affinity:
             podAntiAffinity:
               preferredDuringSchedulingIgnoredDuringExecution:
