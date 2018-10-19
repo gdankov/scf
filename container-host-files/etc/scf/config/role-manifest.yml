@@ -437,9 +437,6 @@ instance_groups:
   configuration:
     templates:
       properties.route_registrar.routes: '[{"name":"usb", "port": 24053, "uris":["usb.((DOMAIN))", "*.usb.((DOMAIN))"], "registration_interval":"10s"}, {"name":"broker", "port": 24054, "uris":["brokers.((DOMAIN))", "*.brokers.((DOMAIN))"], "registration_interval":"10s"}]'
-
-# -------------------------------------------------------- CHANGES -------------------------------------------------
-
 - name: diego-api
   environment_scripts:
   - scripts/configure-HA-hosts.sh
@@ -501,9 +498,6 @@ instance_groups:
       properties.tls.ca_certificate: ((INTERNAL_CA_CERT))                   # cfdot property
       properties.tls.certificate: '"((BBS_REP_CERT))"'                      # cfdot property
       properties.tls.private_key: '"((BBS_REP_CERT_KEY))"'                  # cfdot property
-
-# -------------------------------------------------------- END-CHANGES -------------------------------------------------
-
 - name: locket
   environment_scripts:
   - scripts/configure-HA-hosts.sh
@@ -532,14 +526,10 @@ instance_groups:
           capabilities: []
           memory: 310
           virtual-cpus: 2
-
-# -------------------------------------- CHANGES ------------------------------------
           healthcheck:
             readiness:
               command:
               - head -c0 </dev/tcp/${HOSTNAME}/8891
-# -------------------------------------- END-CHANGES ------------------------------------
-
           affinity:
             podAntiAffinity:
               preferredDuringSchedulingIgnoredDuringExecution:
@@ -591,17 +581,6 @@ instance_groups:
           affinity:
             podAntiAffinity:
               preferredDuringSchedulingIgnoredDuringExecution:
-              # ----------------------------------------- not sure if we need this --------------------------------------------
-              # - weight: 100
-              #   podAffinityTerm:
-              #     labelSelector:
-              #       matchExpressions:
-              #       - key: "skiff-role-name"
-              #         operator: In
-              #         values:
-              #         - diego-cell
-              #     topologyKey: "beta.kubernetes.io/os"
-              # ------------------------------------------------------------------------------------------------------------------
               - weight: 100
                 podAffinityTerm:
                   labelSelector:
@@ -1056,8 +1035,6 @@ instance_groups:
   configuration:
     templates:
       properties.route_registrar.routes: '[{"name":"log-api", "port":8081, "uris":["doppler.((DOMAIN))"], "registration_interval":"10s"}, {"name":"loggregator_trafficcontroller", "port":8080, "uris":["loggregator.((DOMAIN))"], "registration_interval":"10s"}]'
-
-# -------------------------------------------------------- CHANGES -------------------------------------------------
 - name: diego-brain
   environment_scripts:
   - scripts/configure-HA-hosts.sh
@@ -1115,8 +1092,6 @@ instance_groups:
       properties.tls.ca_certificate: ((INTERNAL_CA_CERT))                   # cfdot property
       properties.tls.certificate: '"((BBS_REP_CERT))"'                      # cfdot property
       properties.tls.private_key: '"((BBS_REP_CERT_KEY))"'                  # cfdot property
-# -------------------------------------------------------- END-CHANGES -------------------------------------------------
-
 - name: cc-uploader
   environment_scripts:
   - scripts/configure-HA-hosts.sh
@@ -1164,9 +1139,6 @@ instance_groups:
           internal: 17018
   - name: loggregator_agent
     release: loggregator-agent
-
-# -------------------------------------------------------- CHANGES -------------------------------------------------
-
 - name: diego-access
   environment_scripts:
   - scripts/configure-HA-hosts.sh
@@ -1379,8 +1351,6 @@ instance_groups:
       properties.tls.certificate: '"((BBS_REP_CERT))"'                      # cfdot property
       properties.tls.key: ((REP_SERVER_CERT_KEY))
       properties.tls.private_key: '"((BBS_REP_CERT_KEY))"'                  # cfdot property
-# -------------------------------------------------------- END-CHANGES -------------------------------------------------
-
 - name: acceptance-tests-brain
   type: bosh-task
   tags:
@@ -1962,6 +1932,7 @@ configuration:
     properties.blobstore.tls.cert: '"((BLOBSTORE_TLS_CERT))"'
     properties.blobstore.tls.private_key: '"((BLOBSTORE_TLS_CERT_KEY))"'
     properties.build: '"((CLUSTER_BUILD))"'
+
     properties.capi.cc_uploader.cc.ca_cert: '"((INTERNAL_CA_CERT))"'
     properties.capi.cc_uploader.cc.client_cert: '"((CC_SERVER_CRT))"'
     properties.capi.cc_uploader.cc.client_key: '"((CC_SERVER_CRT_KEY))"'
@@ -1969,8 +1940,6 @@ configuration:
     properties.capi.cc_uploader.mutual_tls.ca_cert: '"((INTERNAL_CA_CERT))"'
     properties.capi.cc_uploader.mutual_tls.server_cert: '"((CC_UPLOADER_CRT))"'
     properties.capi.cc_uploader.mutual_tls.server_key: '"((CC_UPLOADER_CRT_KEY))"'
-
-# --------------------------------------- CHANGES ---------------------------------------------
     properties.capi.tps.bbs.api_location: diego-api-bbs.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN)):8889
     properties.capi.tps.bbs.ca_cert: '"((INTERNAL_CA_CERT))"'
     properties.capi.tps.bbs.client_cert: '"((BBS_CLIENT_CRT))"'
@@ -1982,8 +1951,6 @@ configuration:
     properties.capi.tps.log_level: '"((GO_LOG_LEVEL))((#LOG_LEVEL))((/LOG_LEVEL))"'
     properties.capi.tps.traffic_controller_url: ws://log-api-loggregator-trafficcontroller.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN)):8081
     properties.capi.tps.watcher.locket.api_location: '"locket-locket.((KUBERNETES_NAMESPACE)):8891"'
-# ----------------------------------------- END-CHANGES ---------------------------------------------
-
     properties.cc.allow_app_ssh_access: ((ALLOW_APP_SSH_ACCESS))
     properties.cc.allowed_cors_domains: ((ALLOWED_CORS_DOMAINS))
     properties.cc.app_bits_max_body_size: ((NGINX_MAX_REQUEST_BODY_SIZE))M
@@ -2001,7 +1968,6 @@ configuration:
     properties.cc.default_app_memory: '"((DEFAULT_APP_MEMORY))"'
     properties.cc.default_app_ssh_access: '"((DEFAULT_APP_SSH_ACCESS))"'
     properties.cc.default_stack: '"((DEFAULT_STACK))"'
-# -------------------------------------------------------- CHANGES -------------------------------------------------
     properties.cc.diego.bbs.url: https://diego-api-bbs.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN)):8889
     properties.cc.diego.cc_uploader_https_url: https://cc-uploader-cc-uploader.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN)):9091
     properties.cc.diego.docker_staging_stack: '"((DEFAULT_STACK))"'
@@ -2010,7 +1976,6 @@ configuration:
     properties.cc.diego.lifecycle_bundles: '{"buildpack/((SUSE_STACK))":"buildpack_app_lifecycle/buildpack_app_lifecycle.tgz","buildpack/cflinuxfs2":"buildpack_app_lifecycle/buildpack_app_lifecycle.tgz","docker":"docker_app_lifecycle/docker_app_lifecycle.tgz"}'
     properties.cc.diego.use_privileged_containers_for_running: ((USE_DIEGO_PRIVILEGED_CONTAINERS))
     properties.cc.diego.use_privileged_containers_for_staging: ((USE_STAGER_PRIVILEGED_CONTAINERS))
-# -------------------------------------------------------- END-CHANGES -------------------------------------------------
     properties.cc.disable_custom_buildpacks: ((DISABLE_CUSTOM_BUILDPACKS))
     properties.cc.droplets.max_staged_droplets_stored: ((DROPLET_MAX_STAGED_STORED))
     properties.cc.droplets.webdav_config.password: '"((BLOBSTORE_PASSWORD))"'
@@ -2026,10 +1991,8 @@ configuration:
     properties.cc.mutual_tls.private_key: '"((CC_SERVER_CRT_KEY))"'
     properties.cc.mutual_tls.public_cert: '"((CC_SERVER_CRT))"'
     properties.cc.nginx_error_log_level: '"((NGINX_LOG_LEVEL))((#LOG_LEVEL))((/LOG_LEVEL))"'
-
     properties.cc.opi.cc_uploader_url: https://cc-uploader-cc-uploader.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN)):9091
     properties.cc.opi.url: http://eirini-opi.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN)):8085
-    
     properties.cc.packages.webdav_config.password: '"((BLOBSTORE_PASSWORD))"'
     properties.cc.packages.webdav_config.private_endpoint: https://blobstore-blobstore.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN)):4443
     properties.cc.packages.webdav_config.public_endpoint: '"https://blobstore.((DOMAIN))"'
@@ -2056,9 +2019,7 @@ configuration:
     properties.cf.insecure_api_url: http://api-cloud-controller-ng.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN)):9022 # For post-deployment-setup, because cf cli has no client certs
     properties.cf_mysql.host: '"mysql-set.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN))"'
     properties.cf_mysql.mysql.advertise_host: mysql-((KUBE_COMPONENT_INDEX)).mysql-set.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN))
-    # -------------------------------------- CHANGE -----------------------------------------------------
     properties.cf_mysql.mysql.seeded_databases: '[{"name":"ccdb","username":"ccadmin","password":"((MYSQL_CCDB_ROLE_PASSWORD))"},{"name":"diego","username":"diego","password":"((MYSQL_DIEGO_PASSWORD))"},{"name":"routing-api","username":"routing-api","password":"((MYSQL_ROUTING_API_PASSWORD))"},{"name":"usb","username":"usb","password":"((MYSQL_CF_USB_PASSWORD))"},{"name":"nfsvolume","username":"nfsvolume","password":"((MYSQL_PERSI_NFS_PASSWORD))"},{"name":"diego_locket","username":"diego_locket","password":"((MYSQL_DIEGO_LOCKET_PASSWORD))"},{"name":"credhub_user","username":"credhub_user","password":"((MYSQL_CREDHUB_USER_PASSWORD))"}]'
-    # -------------------------------------- END-CHANGE -------------------------------------------------
     properties.cflinuxfs2-rootfs.trusted_certs: '"((ROOTFS_TRUSTED_CERTS))((#ROOTFS_TRUSTED_CERTS))\n((/ROOTFS_TRUSTED_CERTS))((INTERNAL_CA_CERT))"'
     properties.consul.agent.domain: ((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN))
     properties.consul.agent.servers.lan: ((KUBE_CONSUL_CLUSTER_IPS))
@@ -2069,8 +2030,6 @@ configuration:
     properties.copilot.client_ca_file: ((INTERNAL_CA_CERT))
     # CLUSTER_DESCRIPTION is not wrapped in quotes because it has quotes in the dev env file.
     properties.description: ((CLUSTER_DESCRIPTION))
-
-    # -------------------------------------- CHANGE -----------------------------------------------------
     properties.diego.auctioneer.bbs.api_location: diego-api-bbs.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN)):8889
     properties.diego.auctioneer.bbs.ca_cert: '"((INTERNAL_CA_CERT))"'
     properties.diego.auctioneer.bbs.client_cert: '"((BBS_CLIENT_CRT))"'
@@ -2089,11 +2048,7 @@ configuration:
     properties.diego.bbs.auctioneer.client_key: '"((BBS_AUCTIONEER_CERT_KEY))"'
     properties.diego.bbs.ca_cert: '"((INTERNAL_CA_CERT))"'
     properties.diego.bbs.encryption_keys: '[{"label": "active", "passphrase": "((BBS_ACTIVE_KEY_PASSPHRASE))"}]'
-
-# ---------------------------------- CHANGES ---------------------------------------
     properties.diego.bbs.locket.api_location: '"locket-locket.((KUBERNETES_NAMESPACE)):8891"'
-# ---------------------------------- END-CHANGES ---------------------------------------
-
     properties.diego.bbs.log_level: '"((GO_LOG_LEVEL))((#LOG_LEVEL))((/LOG_LEVEL))"'
     properties.diego.bbs.rep.ca_cert: '"((INTERNAL_CA_CERT))"'
     properties.diego.bbs.rep.client_cert: '"((BBS_REP_CERT))"'
@@ -2106,13 +2061,9 @@ configuration:
     properties.diego.executor.disk_capacity_mb: ((DIEGO_CELL_DISK_CAPACITY_MB))
     properties.diego.executor.memory_capacity_mb: ((DIEGO_CELL_MEMORY_CAPACITY_MB))
     properties.diego.file_server.log_level: '"((GO_LOG_LEVEL))((#LOG_LEVEL))((/LOG_LEVEL))"'
-    # -------------------------------------- END-CHANGE -------------------------------------------------
-
     properties.diego.locket.log_level: '"((GO_LOG_LEVEL))((#LOG_LEVEL))((/LOG_LEVEL))"'
     properties.diego.locket.sql.db_host: '"mysql-set.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN))"'
     properties.diego.locket.sql.db_password: '"((MYSQL_DIEGO_LOCKET_PASSWORD))"'
-
-    # -------------------------------------- CHANGE -----------------------------------------------------
     properties.diego.rep.bbs.api_location: diego-api-bbs.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN)):8889
     properties.diego.rep.cell_id: ((HOSTNAME))
     properties.diego.rep.locket.api_location: locket-locket.((KUBERNETES_NAMESPACE)):8891
@@ -2137,13 +2088,9 @@ configuration:
     properties.diego.ssh_proxy.uaa.port: ((UAA_PORT))
     properties.diego.ssh_proxy.uaa.url: https://((KUBERNETES_NAMESPACE)).((UAA_HOST))
     properties.diego.ssh_proxy.uaa_secret: '"((UAA_CLIENTS_DIEGO_SSH_PROXY_SECRET))"'
-    # -------------------------------------- END-CHANGE -------------------------------------------------
-
     properties.domain: '"((DOMAIN))"'
     properties.doppler.addr: '"doppler-doppler-set.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN))"'
     properties.fissile.monit.password: '"((MONIT_PASSWORD))"'
-
-    # -------------------------------------- CHANGE -----------------------------------------------------
     properties.garden.apparmor_profile: '"((GARDEN_APPARMOR_PROFILE))"' # Quoting needed to pass through empty string
     properties.garden.dns_servers: '[((GARDEN_LINUX_DNS_SERVER))]'
     properties.garden.docker_registry_endpoint: ((GARDEN_DOCKER_REGISTRY))((^GARDEN_DOCKER_REGISTRY))null((/GARDEN_DOCKER_REGISTRY))
@@ -2160,8 +2107,6 @@ configuration:
     properties.garden.privileged_image_plugin: "((^GARDEN_DISABLE_BTRFS))/var/vcap/packages/groot-btrfs/bin/groot-btrfs((/GARDEN_DISABLE_BTRFS))"
     properties.garden.privileged_image_plugin_extra_args: ((^GARDEN_DISABLE_BTRFS))["--config", "/var/vcap/jobs/groot-btrfs/config/groot-btrfs-privileged.yaml"]((/GARDEN_DISABLE_BTRFS))
     properties.grootfs.insecure_docker_registry_list: '[((INSECURE_DOCKER_REGISTRIES))]'
-    # -------------------------------------- END-CHANGE -------------------------------------------------
-
     # How to reach the capi.cc_uploader
     properties.internal_hostname: cc-uploader-cc-uploader.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN))
     properties.locks.locket.hostname: locket-locket.((KUBERNETES_NAMESPACE))
@@ -2320,8 +2265,6 @@ variables:
     default: true
     description: Allow users to change the value of the app-level allow_ssh attribute.
     required: true
-
-# -------------------------------- CHANGES -------------------------------------
 - name: APP_SSH_KEY
   options:
     secret: true
@@ -2334,15 +2277,11 @@ variables:
     description: MD5 fingerprint of the host key of the SSH proxy that brokers connections
       to application instances.
     required: true
-# -------------------------------- END-CHANGES -------------------------------------
-
 - name: APP_TOKEN_UPLOAD_GRACE_PERIOD
   options:
     default: 1200
     description: Extra token expiry time while uploading big apps, in seconds.
     required: true
-
-# ---------------------------------- CHANGES -----------------------------""
 - name: AUCTIONEER_REP_CERT
   options:
     secret: true
@@ -2368,8 +2307,6 @@ variables:
     secret: true
     description: PEM-encoded server key
     required: true
-# ---------------------------------- END-CHANGES -----------------------------""
-
 - name: AUTOSCALER_API_SERVER_DB_CONFIG_IDLE_TIMEOUT
   options:
     default: 100
@@ -2824,8 +2761,6 @@ variables:
     secret: true
     description: the uaa client secret used by Autoscaler.
   type: password
-
-  # ------------------------------------------------------ CHANGES ------------------------------------------------------
 - name: BBS_ACTIVE_KEY_PASSPHRASE
   options:
     secret: true
@@ -2882,8 +2817,6 @@ variables:
     secret: true
     description: PEM-encoded client key.
     required: true
-  # ------------------------------------------------------ END-CHANGES ------------------------------------------------------
-
 - name: BLOBSTORE_ACCESS_RULES
   options:
     default: allow 10.0.0.0/8; allow 172.16.0.0/12; allow 192.168.0.0/16;
@@ -3123,8 +3056,6 @@ variables:
   options:
     default: cflinuxfs2
     description: The default stack to use if no custom stack is specified by an app.
-
-# --------------------------------------- CHANGES ------------------------------------
 - name: DIEGO_CELL_DISK_CAPACITY_MB
   options:
     default: auto
@@ -3150,8 +3081,6 @@ variables:
     description: A CIDR subnet mask specifying the range of subnets available to be
       assigned to containers.
     required: true
-# -------------------------------------- END-CHANGES -------------------------------------------
-
 - name: DIEGO_CLIENT_CERT
   options:
     secret: true
@@ -3246,8 +3175,6 @@ variables:
       value set to false, the gorouter sets the header X-Forwarded-Proto to the protocol
       of the incoming request.
     required: true
-
-# ----------------------------------------------- CHANGES --------------------------------------------
 - name: GARDEN_APPARMOR_PROFILE
   options:
     default: garden-default
@@ -3276,9 +3203,6 @@ variables:
     description: The filesystem driver to use (btrfs or overlay-xfs).
     required: true
     internal: true
-# ----------------------------------------------- END-CHANGES --------------------------------------------
-
-
 - name: GO_LOG_LEVEL
   options:
     type: environment
@@ -3304,8 +3228,6 @@ variables:
   options:
     required: false
     description: Location of the proxy to use for regular web access.
-
-# ----------------------------------------------- CHANGES --------------------------------------------
 - name: INSECURE_DOCKER_REGISTRIES
   options:
     default: ''
@@ -3313,9 +3235,6 @@ variables:
     description: >
       A comma-separated whitelist of insecure Docker registries in the
       form of '<HOSTNAME|IP>:PORT'. Each registry must be quoted separately.
-# -----------------------------------------------END-CHANGES --------------------------------------------
-
-
 - name: INTERNAL_API_PASSWORD
   options:
     secret: true
@@ -3491,17 +3410,12 @@ variables:
     secret: true
     required: true
   type: password
-
-# ---------------------------------- CHANGES -------------------------------------
 - name: MYSQL_DIEGO_PASSWORD
   options:
     secret: true
     description: The password for access to MySQL by diego.
     required: true
   type: password
-# ---------------------------------- END-CHANGES -------------------------------------
-
-
 - name: MYSQL_GALERA_HEALTHCHECK_ENDPOINT_PASSWORD
   options:
     secret: true
@@ -3646,8 +3560,6 @@ variables:
     description: Password for Postgres administrator account
     required: true
   type: password
-
-# ---------------------------------------------- CHANGES -----------------------------------------------
 - name: REP_SERVER_CERT
   options:
     secret: true
@@ -3663,8 +3575,6 @@ variables:
     secret: true
     description: PEM-encoded server key
     required: true
-# ---------------------------------------------- CHANGES -----------------------------------------------
-
 - name: ROOTFS_TRUSTED_CERTS
   options:
     default: ''
@@ -3780,9 +3690,6 @@ variables:
     description: >
       During build this is set to an appropriate description for the SUSE stack built into SCF.
       Cannot be set by the user.
-
-# ----------------------------------------------- CHANGES ---------------------------------------------------------
-# hmmmmmmmmmmmmmmmmmmmmmm
 - name: SUSE_STACK_DIRNAME
   options:
     default: opensuse42
@@ -3790,8 +3697,6 @@ variables:
     description: >
       During build this is set to the directory that contains the SUSE stack built into SCF.
       Cannot be set by the user.
-# ----------------------------------------------- END-CHANGES ---------------------------------------------------------
-
 - name: SYSLOG_ADAPT_CERT
   options:
     secret: true
@@ -3837,8 +3742,6 @@ variables:
     example: tcp.my-scf-cluster.com
     required: true
     description: TCP routing domain of the SCF cluster; only used for testing;
-
-# ----------------------------------------- CHANGES ---------------------------------------------
 - name: TPS_CC_CLIENT_CRT
   options:
     secret: true
@@ -3853,8 +3756,6 @@ variables:
     description: PEM-encoded client key for internal communication between the cloud
       controller and TPS.
     required: true
-# ----------------------------------------- END-CHANGES ---------------------------------------------
-
 - name: TRAFFICCONTROLLER_CERT
   options:
     secret: true
@@ -3924,16 +3825,12 @@ variables:
     description: The password for UAA access by the client for the user-accessible credhub
     required: true
   type: password
-
-# --------------------------------------------------------------- CHANGES ---------------------------------------------------------
 - name: UAA_CLIENTS_DIEGO_SSH_PROXY_SECRET
   options:
     secret: true
     description: The password for UAA access by the SSH proxy.
     required: true
   type: password
-# --------------------------------------------------------------- END-CHANGES ---------------------------------------------------------
-
 - name: UAA_CLIENTS_DOPPLER_SECRET
   options:
     secret: true
@@ -3979,7 +3876,6 @@ variables:
   options:
     default: 2793
     description: The tcp port the UAA server (root zone) listens on for requests.
-# --------------------------------------------- CHANGES ----------------------------------------------------
 - name: USE_DIEGO_PRIVILEGED_CONTAINERS
   options:
     default: false
@@ -3991,5 +3887,3 @@ variables:
     default: false
     description: Whether or not to use privileged containers for staging tasks.
     required: true
-# --------------------------------------------- END-CHANGES ----------------------------------------------------
-
