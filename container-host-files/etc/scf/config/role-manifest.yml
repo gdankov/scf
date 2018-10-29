@@ -2112,6 +2112,7 @@ configuration:
     properties.locks.locket.hostname: locket-locket.((KUBERNETES_NAMESPACE))
     properties.loggregator.ca_cert: ((INTERNAL_CA_CERT))
     properties.loggregator.cert: ((LOGGREGATOR_CLIENT_CERT))
+    properties.loggregator.doppler.addrs: '["doppler-doppler-set.((KUBERNETES_NAMESPACE)).svc.((KUBERNETES_CLUSTER_DOMAIN))", "loggregator-router.oratos.svc.((KUBERNETES_CLUSTER_DOMAIN)):8082"]'
     properties.loggregator.key: ((LOGGREGATOR_CLIENT_CERT_KEY))
     properties.loggregator.tls.agent.cert: '"((LOGGREGATOR_AGENT_CERT))"'
     properties.loggregator.tls.agent.key: '"((LOGGREGATOR_AGENT_CERT_KEY))"'
