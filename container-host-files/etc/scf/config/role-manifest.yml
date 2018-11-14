@@ -3114,6 +3114,7 @@ variables:
     ca: INTERNAL_CA_CERT
     alternative_names:
     - doppler
+    - metron
     description: PEM-encoded certificate.
     required: true
   type: certificate
