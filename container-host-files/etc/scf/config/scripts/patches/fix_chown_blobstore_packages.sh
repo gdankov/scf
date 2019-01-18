@@ -27,9 +27,10 @@ index 20b3140..1cf5a58 100644
    mkdir -p $data_dir
    mkdir -p $data_tmp_dir
 
--  local dirs="$run_dir $log_dir $store_dir $store_tmp_dir $data_dir $data_tmp_dir $nginx_webdav_dir ${nginx_webdav_dir}/.."
+   chown vcap:vcap $store_dir
+-  local dirs="$run_dir $log_dir $store_tmp_dir $data_dir $data_tmp_dir $nginx_webdav_dir ${nginx_webdav_dir}/.."
 -  local num_needing_chown=$(find $dirs -not -user vcap -or -not -group vcap | wc -l)
-+  local dirs="$run_dir $log_dir $store_dir $store_tmp_dir $data_dir $data_tmp_dir $packages_dir"
++  local dirs="$run_dir $log_dir $store_dir $data_dir $data_tmp_dir $packages_dir"
 +  local num_needing_chown=$(find -L $dirs -not -user vcap -or -not -group vcap | wc -l)
 
    if [ $num_needing_chown -gt 0 ]; then
