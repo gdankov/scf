@@ -1,3 +1,6 @@
+[submodule "src/capi-release"]
+	path = src/capi-release
+	url = https://github.com/JulzDiverse/capi-release.git
 [submodule "src/uaa-fissile-release"]
 	path = src/uaa-fissile-release
 	url = https://github.com/SUSE/uaa-fissile-release
