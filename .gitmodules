@@ -1,6 +1,6 @@
 [submodule "src/capi-release"]
 	path = src/capi-release
-	url = https://github.com/cloudfoundry/capi-release.git
+	url = https://github.com/cloudfoundry/capi-release
 	branch = develop
 [submodule "src/uaa-fissile-release"]
 	path = src/uaa-fissile-release
